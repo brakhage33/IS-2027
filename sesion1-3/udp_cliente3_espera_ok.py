@@ -20,7 +20,7 @@ print("Escribe tus mensajes. Envía 'FIN' para terminar.\n")
 
 while True:
     linea = input("> ")
-    mensaje = f"{contador}: {linea}"
+    mensaje = f"{contador}-{linea}"
     contador+=1
 
     # Condición de parada

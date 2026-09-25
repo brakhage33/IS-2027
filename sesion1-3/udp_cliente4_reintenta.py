@@ -25,7 +25,7 @@ while True:
 
     while timeout <= 2 and not ok:
         linea = input("> ")
-        mensaje = f"{contador}: {linea}"
+        mensaje = f"{contador}-{linea}"
 
         # Condición de parada
         if linea == "FIN":
