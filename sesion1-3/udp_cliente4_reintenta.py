@@ -4,7 +4,7 @@ import sys
 # Valores por defecto
 HOST = "localhost"
 PUERTO = 9999
-contador = 1
+contador = 0
 
 # Lectura de argumentos por línea de comandos (IP y Puerto)
 if len(sys.argv) > 1:
