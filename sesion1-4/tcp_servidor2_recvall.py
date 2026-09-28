@@ -1,6 +1,15 @@
 import socket
 import sys
 
+def recvall(socket, esperados):
+    recibidos = 0
+    restantes = esperados
+    datos = b""
+    while restantes != 0:
+        datos += socket.recv(restantes)
+        recibidos = len(datos)
+        restantes = esperados - recibidos
+    return datos
 
 PUERTO = 9999
 
@@ -21,9 +30,9 @@ while True:
     sd, origen = s.accept()
     print("Nuevo cliente conectado desde %s, %d" % origen)
     continuar = True
-    
+
     while continuar:
-        datos = sd.recv(5)
+        datos = recvall(sd, 5)
         datos = datos.decode("ascii")
 
         if datos == "":
