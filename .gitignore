@@ -1,3 +1,26 @@
 *~
 \#*\#
 .#*
+
+# Entorno virtual de Python
+flaskenv/
+venv/
+ENV/
+env/
+
+# Caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Instancia de Flask y configuración local con datos sensibles
+instance/
+*.db
+*.sqlite
+
+# Carpetas de bases de datos locales o volúmenes de Docker
+basedatos/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
