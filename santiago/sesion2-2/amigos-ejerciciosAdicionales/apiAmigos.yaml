@@ -1,0 +1,173 @@
+swagger: "2.0"
+info:
+  description: "Interfaz REST para la aplicación Amigos"
+  version: "1.0.0"
+  title: "API Amigos"
+host: "nombre.del.servidor.com"
+basePath: "/api"
+tags:
+- name: "amigos"
+  description: "Lectura y modificación de los amigos en la base de datos"
+schemes:
+- "https"
+- "http"
+paths:
+  /amigos:
+    get:
+      tags:
+      - "amigos"
+      summary: "Obtener la lista de amigos"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Amigo"
+    post:
+      tags:
+      - "amigos"
+      summary: "Añadir un amigo a la base de datos"
+      description: |
+         El nombre es obligatorio y no puede existir previamente en la base de datos.
+         Los restantes campos, si se omiten, toman un valor por defecto de cero
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "JSON con los datos del amigo a añadir"
+        required: true
+        schema:
+          $ref: "#/definitions/AmigoPOST"
+      responses:
+        422:
+          description: "Datos incorrectos, o nombre duplicado en la base de datos"
+        200:
+          description: "Amigo creado correctamente. El JSON de respuesta incluye su id"
+          schema:
+            $ref: "#/definitions/Amigo"
+  /amigo/{id}:
+    get:
+      tags:
+      - amigos
+      summary: "Obtiene información de un amigo concreto, a partir de su id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: id
+        in: path
+        description: "Id del amigo"
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Amigo"
+        404:
+          description: "Amigo no encontrado"
+    put:
+      tags:
+       - amigos
+      summary: "Modifica los datos de un amigo"
+      description: |
+        Todos los campos son opcionales. Sólo los que se reciban serán actualizados.
+        El nombre ha de ser único en la base de datos. Si se proporciona un nombre ya existente en
+        otro id, se producirá un error.
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "JSON con los datos a modificar en el amigo"
+        required: true
+        schema:
+          $ref: "#/definitions/AmigoPOST"
+      - name: id
+        in: path
+        description: "Id del amigo"
+        required: true
+        type: integer
+      responses:
+        422:
+          description: "Datos incorrectos o nombre ya existente"
+        404:
+          description: "Id no encontrado"
+        200:
+          description: "Amigo actualizado correctamente"
+          schema:
+            $ref: "#/definitions/Amigo"
+    delete:
+      tags:
+      - amigos
+      parameters:
+      - name: id
+        in: path
+        description: "Id del amigo"
+        required: true
+        type: integer
+      responses:
+        204:
+          description: "Amigo eliminado con éxito."
+        404:
+          description: "Amigo no encontrado"
+  /amigo/byName/{name}:
+    get:
+      tags:
+      - amigos
+      summary: "Obtiene información de un amigo concreto, a partir de su nombre"
+      produces:
+      - "application/json"
+      parameters:
+      - name: name
+        in: path
+        description: "Nombre del amigo"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Amigo"
+        404:
+          description: "Amigo no encontrado"
+definitions:
+  AmigoPOST:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "Nombre del amigo"
+        example: "Manolo"
+      lati:
+        type: "string"
+        description: "Latitud de sus coordenadas GPS"
+        example: "45.12"
+      longi:
+        type: "string"
+        description: "Longitud de sus coordenadsa GPS"
+        example: "-3.2"
+  Amigo:
+    properties:
+      id:
+        type: "integer"
+        description: "Id de la base de datos"
+        example: 2
+      name:
+        type: "string"
+        description: "Nombre del amigo"
+        example: "Manolo"
+      lati:
+        type: "string"
+        description: "Latitud de sus coordenadas GPS"
+        example: "45.12"
+      longi:
+        type: "string"
+        description: "Longitud de sus coordenadsa GPS"
