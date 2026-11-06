@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 import socket
 import sys
+import email.message, email.policy, email.utils
+
 correo = "uo301086@uniovi.es" # cambiadlo por el vuestro si quereis
+gmail = "emma.sanchez.couso@gmail.com"
 
 def RecvReply(sock, codigo):
     # apartado 1
     # recibe socket de hasta un maximo de 1024 bytes y un código (cadena de bytes)
     # imprime por pantalla lo recibido
     reply = sock.recv(1024)
-    print("Recibido:", reply.decode('utf-8', errors='ignore'), end='')
+    print("Recibido:", reply.decode(), end='')
     
     # Extrae los tres primeros bytes y los compara con el código recibido como parámetro
     if len(reply) < 3 or reply[:3] != codigo:
@@ -18,13 +21,10 @@ def RecvReply(sock, codigo):
 # apartado 2
 # PROGRAMA PRINCIPAL
 def main():
-    # lo probamos asi con un servidor local y luego en los ordenadores de practicas probaremos en relay
-    #server = "relay.uniovi.es"
-    #port = 25
-    server = "127.0.0.1" 
-    port = 2525 
+    server = "relay.uniovi.es"
+    port = 25
     fromaddr = correo
-    toaddr = correo
+    toaddr = gmail
     
     subject = "Prueba SMTP crudo"
     data = "Holaaaaa soy un mensaje :)"
@@ -46,12 +46,12 @@ def main():
 
     # MAIL FROM
     mail_from_cmd = f"MAIL FROM:<{fromaddr}>\r\n"
-    s.sendall(mail_from_cmd.encode('utf-8'))
+    s.sendall(mail_from_cmd.encode())
     RecvReply(s, b"250")
 
     # RCPT TO
     rcpt_to_cmd = f"RCPT TO:<{toaddr}>\r\n"
-    s.sendall(rcpt_to_cmd.encode('utf-8'))
+    s.sendall(rcpt_to_cmd.encode())
     RecvReply(s, b"250")
 
     # DATA
@@ -59,14 +59,19 @@ def main():
     RecvReply(s, b"354")
 
     # configurar los datos del mensaje
-    message = """To: %s
-    From: %s
-    Subject: %s\r\n\r\n
-    %s
-    \r\n.\r\n""" % (toaddr, fromaddr, subject, data)
-    
+    mensaje = email.message.EmailMessage()
+    mensaje['To'] = 'Desti Natario <destinatario@example.com>'
+    mensaje['From'] = 'Remi Tente <remitente@example.com>'
+    mensaje['Subject'] = 'Mensaje de prueba'
+    mensaje['Date'] = email.utils.formatdate(localtime=True)
+    mensaje['Message-ID'] = email.utils.make_msgid()
+    mensaje.set_content("Esto es una prueba")
+
+    binario = mensaje.as_bytes()
+    print(binario.decode("utf-8"))
+
     # enviar mensaje
-    s.sendall(message.encode('utf-8'))
+    s.sendall(binario)
     RecvReply(s, b"250")
 
     # QUIT
