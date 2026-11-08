@@ -62,6 +62,8 @@ def main():
     %s
     \r\n.\r\n""" % (toaddr, fromaddr, subject, data)
     
+    print(message)
+    
     # enviar mensaje
     s.sendall(message.encode())
     RecvReply(s, b"250")

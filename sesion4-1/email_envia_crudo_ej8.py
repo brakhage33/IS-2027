@@ -68,10 +68,12 @@ def main():
     mensaje.set_content("Esto es una prueba")
 
     binario = mensaje.as_bytes()
-    print(binario.decode("utf-8"))
+    datos_completos = binario + b".\r\n"
+    
+    print(datos_completos.decode("utf-8"))
 
     # enviar mensaje
-    s.sendall(binario)
+    s.sendall(datos_completos)
     RecvReply(s, b"250")
 
     # QUIT

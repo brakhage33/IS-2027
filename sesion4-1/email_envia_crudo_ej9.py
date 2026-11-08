@@ -73,9 +73,7 @@ def main():
         binario += b"\r\n"
     datos_completos = binario + b".\r\n"
     
-    print("print")
     print(datos_completos.decode("utf-8"))
-    print("print")
 
     # enviar mensaje
     s.sendall(datos_completos)

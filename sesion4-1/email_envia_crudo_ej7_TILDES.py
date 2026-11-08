@@ -48,7 +48,7 @@ def main():
 
     # RCPT TO
     rcpt_to_cmd = f"RCPT TO:<{toaddr}>\r\n"
-    s.sendall(rcpt_to_cmd.encode())
+    s.sendall(rcpt_to_cmd.encode('ascii'))
     RecvReply(s, b"250")
 
     # DATA
@@ -62,6 +62,8 @@ def main():
     %s
     \r\n.\r\n""" % (toaddr, fromaddr, subject, data)
     
+    print(message)
+
     # enviar mensaje
     s.sendall(message.encode())
     RecvReply(s, b"250")
