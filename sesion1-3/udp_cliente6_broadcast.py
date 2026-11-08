@@ -38,6 +38,8 @@ if servidores:
     servidor_elegido = servidores[0]
     print(f"\nProbando el servicio con el servidor {servidor_elegido}...")
 
+    cliente.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 0)
+
     cliente.sendto("HOLA".encode("utf-8"), (servidor_elegido, PUERTO))
 
     datos, origen = cliente.recvfrom(1024)
