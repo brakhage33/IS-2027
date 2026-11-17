@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ejemplo de Video.js</title>
+    <!-- 1. Estilos CSS de Video.js desde CDN -->
+    <link href="https://zencdn.net" rel="stylesheet" />
+</head>
+
+<body>
+
+    <!-- 2. Etiqueta HTML5 <video> con la clase 'video-js' -->
+    <video id="mi-reproductor" class="video-js vjs-default-skin vjs-big-play-centered" controls preload="auto"
+        width="640" height="360" poster="https://zencdn.net" data-setup='{}'>
+        <source src="/video5/big_buck_bunny.mp4" type="video/mp4" />
+        <p class="vjs-no-js">
+            Para ver este vídeo, activa JavaScript en tu navegador.
+        </p>
+    </video>
+
+    <!-- 3. Script principal de Video.js -->
+    <script src="https://zencdn.net"></script>
+
+</body>
+
+</html>
