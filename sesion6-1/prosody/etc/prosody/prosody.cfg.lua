@@ -179,7 +179,7 @@ log = {
 -- Every virtual host and component needs a certificate so that clients and
 -- servers can securely verify its identity. Prosody will automatically load
 -- certificates/keys from the directory specified here.
--- For more information, including how to use 'prosodyctl' to auto-import certificates
+-- For more information, including how to use 'prosodyctl' to auto-import certificatesVirtualHost
 -- (from e.g. Let's Encrypt) see https://prosody.im/doc/certificates
 
 -- Location of directory to find certificates in (relative to main config file):
@@ -189,7 +189,7 @@ certificates = "certs"
 -- You need to add a VirtualHost entry for each domain you wish Prosody to serve.
 -- Settings under each VirtualHost entry apply *only* to that host.
 
-VirtualHost "localhost"
+VirtualHost "ingserv08"
 
 --VirtualHost "example.com"
 --	certificate = "/path/to/example.crt"
