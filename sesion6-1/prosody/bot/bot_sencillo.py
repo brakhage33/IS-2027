@@ -1,4 +1,3 @@
-import asyncio
 import slixmpp          # Biblioteca principal para XMPP
 import logging          # Para el log de depuración
 import getpass          # Para pedir la contraseña de forma segura
@@ -14,10 +13,6 @@ class MyBot(slixmpp.ClientXMPP):
         # Registrar los eventos y sus manejadores
         self.add_event_handler("session_start", self.callback_para_session_start)
         self.add_event_handler("message", self.callback_para_message)
-        self.add_event_handler("chatstate_active", self.callback_chatstate_active)
-        self.add_event_handler("chatstate_composing", self.callback_chatstate_composing)
-        self.add_event_handler("chatstate_paused", self.callback_chatstate_paused)
-        self.add_event_handler("chatstate_inactive", self.callback_chatstate_inactive)
 
     # Implementación de los callbacks (todos son tipo async)
     async def callback_para_session_start(self, event):
@@ -35,34 +30,9 @@ class MyBot(slixmpp.ClientXMPP):
 
         if event["type"] == "chat":
             msg = self.Message()
-            msg["to"] = event["from"]
-            msg["type"] = "chat"
-            if recibido.startswith("="):
-                try:
-                    resultado = eval(recibido[1:])
-                    msg["body"] = str(resultado)
-                except Exception as e:
-                    msg["body"] = f"Error: {e}"
-            else:
-                msg["body"] = f"¿{recibido}?"
-            msg["chat_state"] = "active"
-            msg.send()
-    
-    async def callback_chatstate_active(self, event):
-        print(f"{event['from'].bare} está activo")
-
-    async def callback_chatstate_composing(self, event):
-        print(f"{event['from'].bare} está escribiendo...")
-
-    async def callback_chatstate_paused(self, event):
-        print(f"{event['from'].bare} ha parado de escribir")
-
-    async def callback_chatstate_inactive(self, event):
-        print(f"{event['from'].bare} está inactivo")
 
 # Programa principal
 if __name__ == "__main__":
-    asyncio.set_event_loop(asyncio.new_event_loop())
     # Depuración
     logging.basicConfig(level=logging.INFO,
                         format='%(levelname)-8s %(message)s')
@@ -77,8 +47,8 @@ if __name__ == "__main__":
 
     # Manejo del certificado. Hay que extraer una copia de la que se generó
     # en el servidor
-    cert_file = "localhost.crt"
-    ssl_context = ssl._create_unverified_context()
+    cert_file = "./etc/prosody/certs/ingserv00.crt"
+    ssl_context = ssl.create_default_context()
 
     if os.path.exists(cert_file):
         print(f"Cargando certificado de confianza desde: {cert_file}")
@@ -99,7 +69,7 @@ if __name__ == "__main__":
 
     # Asignar el contexto SSL a la instancia del cliente
     client.ssl_context = ssl_context
-    client.register_plugin("xep_0085")
+    # Completar con registro del plugin
     
     # Conectar el bot al servidor
     client.connect((ip, port))
